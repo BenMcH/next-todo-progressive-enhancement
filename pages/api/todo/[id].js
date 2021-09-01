@@ -11,7 +11,7 @@ export default function handler(req, res) {
     if (`${req.headers['Content-Type']}` === 'application/json') {
       res.status(201).json(body);
     } else {
-      res.redirect(302, '/')
+      res.redirect(302, 'http://localhost:3000/')
     }
   } else {
     res.status(501).send()
