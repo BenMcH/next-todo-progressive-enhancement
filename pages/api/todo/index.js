@@ -7,8 +7,11 @@ export default function handler(req, res) {
 
     addTodo(body);
 
-    res.redirect(302, 'http://localhost:3000/')
-
+    if (req.headers['Content-Type'] === 'application/json') {
+      res.status(201).send();
+    } else {
+      res.redirect(302, 'http://localhost:3000/')
+    }
   } else if (req.method === 'GET') {
     res.status(200).send(getTodos())
   }
