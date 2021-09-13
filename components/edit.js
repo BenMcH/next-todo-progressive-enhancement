@@ -7,24 +7,26 @@ export default function EditForm({todo}) {
   const [saved, setSaved] = useState(null);
 
   const updateTodo = async (event) => {
-    if (event) {
-      event.preventDefault();
-    }
-    const response = await fetch(`/api/todo/${todo.todoId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({text, checked})
-    });
+    if (typeof fetch === 'function') {
+      if (event) {
+        event.preventDefault();
+      }
+      const response = await fetch(`/api/todo/${todo.todoId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({text, checked})
+      });
 
-    if (response.ok) {
-      setSaved(true);
+      if (response.ok) {
+        setSaved(true);
+      }
     }
   }
 
   useEffect(() => {
-    setIsJavascriptAvailable(true);
+    setIsJavascriptAvailable(typeof fetch === 'function');
   }, []);
 
   useEffect(() => {

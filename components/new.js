@@ -6,25 +6,23 @@ export default function NewForm({newTodoId, addTodo}) {
   const [text, setText] = useState('');
 
   const onSubmit = async (event) => {
-    event.preventDefault();
+    if (typeof fetch === 'function') {
+      event.preventDefault();
 
-    if (text.trim() === '') {
-      return;
-    }
+      const todo = {text, todoId: v4()};
 
-    const todo = {text, todoId: v4()};
-
-    const response = await fetch('/api/todo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(todo)
-    });
-    
-    if (response.ok) {
-      addTodo(todo);
-      setText('');
+      const response = await fetch('/api/todo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(todo)
+      });
+      
+      if (response.ok) {
+        addTodo(todo);
+        setText('');
+      }
     }
   }
 
