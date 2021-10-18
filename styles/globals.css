@@ -14,3 +14,45 @@ a {
 * {
   box-sizing: border-box;
 }
+
+ul {
+  list-style: none;
+}
+
+ul > li {
+  margin: 4px 0;
+  padding: 4px 0;
+
+  border-bottom: 1px solid #1e1e1e;
+}
+
+li input[type=checkbox] {
+  margin: 0 8px;
+}
+
+input[type=checkbox]:checked + span {
+  text-decoration: line-through;
+}
+
+.success-message {
+  padding-left: 8px;
+  color: #007500;
+}
+
+.fade-hidden {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.fade-show {
+  opacity: 1;
+}
+
+input[type=text] {
+  transition: font-size 300ms;
+}
+
+input[type=text]:focus {
+  font-size: 1.5rem;
+}
+

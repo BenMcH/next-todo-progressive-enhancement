@@ -1,9 +1,15 @@
 import {useState, useEffect} from 'react';
 
+const states = {
+  SETTLED: 'SETTLED',
+  PENDING_SAVE: 'PENDING_SAVE',
+  SAVED: 'SAVED'
+}
+
 export default function EditForm({todo}) {
+  const [state, setState] = useState(states.SETTLED);
   const [checked, setChecked] = useState(Boolean(todo.checked));
   const [text, setText] = useState(todo.text);
-  const [saved, setSaved] = useState(null);
 
   const updateTodo = async (event) => {
     if (typeof fetch === 'function') {
@@ -19,30 +25,35 @@ export default function EditForm({todo}) {
       });
 
       if (response.ok) {
-        setSaved(true);
+        setState(states.SAVED);
       }
     }
   }
 
   useEffect(() => {
-    if (saved === false) {
+    if (state === states.PENDING_SAVE) {
       const timeout = setTimeout(updateTodo, 1000)
 
       return () => clearTimeout(timeout);
     }
-    if (saved) {
-      const timeout = setTimeout(() => setSaved(null), 2500)
+    if (state === states.SAVED) {
+      const timeout = setTimeout(() => setState(states.SETTLED), 2500)
 
       return () => clearTimeout(timeout);
     }
-  }, [saved, text, checked]);
+  }, [state, text, checked]);
 
   return (
-    <form action={`/api/todo/${todo.todoId}`} onChange={() => setSaved(false)} method="POST" onSubmit={updateTodo}>
+    <form action={`/api/todo/${todo.todoId}`} onChange={() => setState(states.PENDING_SAVE)} method="POST" onSubmit={updateTodo} className="edit-form">
       <input type="checkbox" name="checked" checked={checked} onChange={(event) => setChecked(event.target.checked)} />
-      <input type="text" name="text" value={text} onChange={(event) => setText(event.target.value)} />
+      {!checked &&
+        <input type="text" name="text" value={text} onChange={(event) => setText(event.target.value)} />
+      }
+      {checked &&
+        <span>{text}</span>
+      }
       <noscript><button type="submit">Update todo</button></noscript>
-      {saved && 'successfully updated!'}
+      <span className={`${state === states.SAVED && "fade-show"} fade-hidden success-message-message`}>- ✓ Saved</span>
     </form>
   );
 }
