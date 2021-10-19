@@ -53,7 +53,7 @@ export default function EditForm({todo}) {
         <span>{text}</span>
       }
       <noscript><button type="submit">Update todo</button></noscript>
-      <span className={`${state === states.SAVED && "fade-show"} fade-hidden success-message-message`}>- ✓ Saved</span>
+      <span className={`${state === states.SAVED && "fade-show"} fade-hidden success-message`}>- ✓ Saved</span>
     </form>
   );
 }
